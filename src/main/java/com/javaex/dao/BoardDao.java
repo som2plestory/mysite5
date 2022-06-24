@@ -15,7 +15,7 @@ public class BoardDao {
 	private SqlSession sqlSession;
 	
 	
-	// 게시판 리스트 (+ 제목 검색)
+	/**************************************** 게시판 리스트(+ 제목 검색) *****************************************/
 	public List<BoardVo> boardList(String keyword){
 		System.out.println("BoardDao > boardList()");
 		
@@ -24,7 +24,8 @@ public class BoardDao {
 		return boardList;
 	}
 	
-	// 게시글 정보(글 한 개 읽기)
+	
+	/******************************************** 게시글 읽기(1개) *********************************************/
 	public BoardVo getBoard(int no){
 		System.out.println("BoardDao > getBoard()");
 		
@@ -33,14 +34,16 @@ public class BoardDao {
 		return boardVo;
 	}
 	
-	// 다른 사람의 글을 읽을 때: 조회수 1 상승
+	
+	/*********************************** 다른 사람의 글을 읽을 때: 조회수 1 상승 ************************************/
 	public void hitUp(int no) {
 		System.out.println("BoardDao > hitUp()");
 	
 		sqlSession.insert("board.hitUp", no);
 	}
 	
-	// 게시글 삭제
+	
+	/********************************************** 게시글 삭제 ***********************************************/
 	public int boardDelete(BoardVo boardVo) {
 		System.out.println("BoardDao > boardDelete()");
 		
@@ -49,14 +52,16 @@ public class BoardDao {
 		return count;
 	}
 	
-	// 게시글 작성
+	
+	/********************************************** 게시글 작성 ***********************************************/
 	public void boardWrite(BoardVo boardVo) {
 		System.out.println("BoardDao > boardWrite()");
 		
 		sqlSession.insert("board.boardWrite", boardVo);
 	}
 	
-	// 게시글 수정폼
+	
+	/********************************************* 게시글 수정폼 **********************************************/
 	public BoardVo modifyForm(BoardVo writeVo) {
 		System.out.println("BoardDao > modifyForm()");	
 		
@@ -65,7 +70,8 @@ public class BoardDao {
 		return boardVo;
 	}
 	
-	// 게시글 수정
+	
+	/********************************************** 게시글 수정 ***********************************************/
 	public int boardModify(BoardVo writeVo) {
 		System.out.println("BoardDao > boardModify()");
 		

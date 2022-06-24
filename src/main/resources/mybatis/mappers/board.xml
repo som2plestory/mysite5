@@ -13,7 +13,7 @@
 		<result column="name" property="name" />
 	</resultMap>
 
-
+	<!-- /*************************** 게시판 리스트(+ 제목 검색) *****************************/ -->
 	<select id="boardList" parameterType="String" resultMap="BoardVo">
 		SELECT	b.no,
 				title,
@@ -27,6 +27,8 @@
 		ORDER BY b.no DESC
 	</select>
 
+	
+	<!-- /******************************* 게시글 읽기(1개) ********************************/ -->
 	<select id="getBoard" parameterType="int" resultMap="BoardVo">
 		SELECT  b.no,
 				title,
@@ -39,19 +41,25 @@
 		WHERE b.user_no = u.no
 		AND b.no = #{no}
 	</select>
-
+	
+	
+	<!-- /******************** 다른 사람의 글을 읽을 때: 조회수 1 상승 ************************/ -->
  	<insert id="hitUp" parameterType="int">
 		UPDATE board
 		SET hit = hit + 1 
 		WHERE no = #{no}
 	</insert>
 
+
+	<!-- /********************************* 게시글 삭제 *********************************/ -->
 	<delete id="boardDelete" parameterType="com.javaex.vo.BoardVo">
 		DELETE from board
 		WHERE no = #{no}
 		AND user_no = #{userNo}
 	</delete>
-
+	
+	
+	<!-- /********************************* 게시글 작성 *********************************/ -->
 	<insert id="boardWrite" parameterType="com.javaex.vo.BoardVo">
 			INSERT into board
 			VALUES (seq_board_no.nextval,
@@ -62,6 +70,7 @@
 					#{userNo})
 	</insert>
 	
+	<!-- /******************************** 게시글 수정폼 ********************************/ -->
 	<select id="modifyForm" parameterType="com.javaex.vo.BoardVo" resultMap="BoardVo">
 		SELECT  b.no,
 				title,
@@ -75,7 +84,8 @@
 		AND b.no = #{no}
 		AND b.user_no = #{userNo}
 	</select>
-
+	
+	<!-- /********************************* 게시글 수정 *********************************/ -->
 	<update id="boardModify" parameterType="com.javaex.vo.BoardVo">
 			update board
 			set title = #{title},

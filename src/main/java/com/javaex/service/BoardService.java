@@ -16,7 +16,7 @@ public class BoardService {
 	private BoardDao boardDao;
 	
 	
-	// // 게시판 리스트(+ 제목 검색)
+	/**************************************** 게시판 리스트(+ 제목 검색) *****************************************/
 	public List<BoardVo> boardList(String keyword){
 		System.out.println("BoardService > BoardList()");
 		
@@ -26,7 +26,7 @@ public class BoardService {
 	}
 	
 	
-	// 게시글 정보(글 한 개 읽기)
+	/******************************************** 게시글 읽기(1개) *********************************************/
 	public BoardVo read(int no, UserVo authUser){
 		System.out.println("BoardService > read()");
 		
@@ -61,7 +61,7 @@ public class BoardService {
 	}
 	
 	
-	// 게시글 삭제
+	/********************************************** 게시글 삭제 ***********************************************/
 	public void boardDelete(BoardVo boardVo) {
 		System.out.println("BoardService > boardDelete()");
 		
@@ -79,7 +79,7 @@ public class BoardService {
 	}
 	
 	
-	// 게시글 작성
+	/********************************************** 게시글 작성 ***********************************************/
 	public boolean boardWrite(BoardVo boardVo) {
 		System.out.println("BoardService > boardWrite()");
 		
@@ -99,7 +99,7 @@ public class BoardService {
 	}
 	
 
-	// 게시글 수정폼
+	/********************************************* 게시글 수정폼 **********************************************/
 	public BoardVo modifyForm(BoardVo writeVo) {
 		System.out.println("BoardService > ModifyForm()");
 		
@@ -110,7 +110,7 @@ public class BoardService {
 	}
 	
 	
-	// 게시글 수정
+	/********************************************** 게시글 작성 ***********************************************/
 	public BoardVo boardModify(BoardVo writeVo) {
 		System.out.println("BoardService > boardModify()");
 		

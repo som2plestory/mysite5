@@ -21,7 +21,7 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	// 게시판 리스트(+ 제목 검색)
+	/********************************************* 게시판 리스트(+ 제목 검색) **********************************************/
 	@RequestMapping(value = "/board/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String list(Model model, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
 		System.out.println("BoardController > list()");
@@ -32,7 +32,8 @@ public class BoardController {
 		return "board/list";
 	}
 
-	// 게시글 읽기(1개)
+	
+	/************************************************* 게시글 읽기(1개) **************************************************/
 	@RequestMapping(value = "/board/read", method = { RequestMethod.GET, RequestMethod.POST })
 	public String read(Model model, HttpSession session, @RequestParam(name = "no", defaultValue = "-1") int no) {
 		System.out.println("BoardController > read()");
@@ -56,7 +57,8 @@ public class BoardController {
 		}
 	}
 
-	// 게시글 삭제
+	
+	/**************************************************** 게시글 삭제 *****************************************************/
 	@RequestMapping(value = "/board/delete", method = { RequestMethod.GET, RequestMethod.POST })
 	public String delete(HttpSession session, @RequestParam(name="no", defaultValue = "-1") int no) {
 		System.out.println("BoardController > delete()");
@@ -82,7 +84,8 @@ public class BoardController {
 		}
 	}
 
-	// 게시글 작성폼
+	
+	/*************************************************** 게시글 작성폼 ****************************************************/
 	@RequestMapping(value = "/board/writeForm")
 	public String writeForm(HttpSession session) {
 		System.out.println("BoardController > writeForm()");
@@ -100,7 +103,8 @@ public class BoardController {
 		}
 	}
 
-	// 게시글 작성
+	
+	/**************************************************** 게시글 작성 *****************************************************/
 	@RequestMapping(value = "/board/write", method = { RequestMethod.GET, RequestMethod.POST })
 	public String write(Model model, HttpSession session, BoardVo boardVo) {
 		System.out.println("BoardController > write()");
@@ -135,7 +139,8 @@ public class BoardController {
 		}
 	}
 
-	// 게시글 수정폼
+	
+	/*************************************************** 게시글 수정폼 ****************************************************/
 	@RequestMapping(value = "/board/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modifyForm(Model model, HttpSession session, @RequestParam(defaultValue = "-1") int no) {
 		System.out.println("BoardController > modifyForm()");
@@ -174,7 +179,8 @@ public class BoardController {
 		}
 	}
 
-	// 게시글 수정
+	
+	/**************************************************** 게시글 수정 *****************************************************/
 	@RequestMapping(value = "board/modify", method = { RequestMethod.GET, RequestMethod.POST })
 	public String modify(Model model, HttpSession session, BoardVo writeVo) {
 		System.out.println("BoardController > modify()");
