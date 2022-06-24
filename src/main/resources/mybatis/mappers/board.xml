@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<resultMap id="BoardVo" type="com.javaex.vo.BoardVo">
+		<result column="no" property="no" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="hit" property="hit" />
+		<result column="reg_date" property="regDate" />
+		<result column="user_no" property="userNo" />
+		<result column="name" property="name" />
+	</resultMap>
+
+
+	<select id="boardList" parameterType="String" resultMap="BoardVo">
+		SELECT	b.no,
+				title,
+				name,
+				hit,
+				to_char(reg_date,'YY-MM-DD') reg_date,
+				user_no
+		FROM board b, users u
+		WHERE b.user_no = u.no
+		AND title LIKE '%'||#{keyword}||'%'
+		ORDER BY b.no DESC
+	</select>
+
+	<select id="getBoard" parameterType="int" resultMap="BoardVo">
+		SELECT  b.no,
+				title,
+				content,
+				name,
+				hit,
+				TO_CHAR(reg_date,'YY-MM-DD') reg_date,
+				user_no
+		FROM board b, users u
+		WHERE b.user_no = u.no
+		AND b.no = #{no}
+	</select>
+
+ 	<insert id="hitUp" parameterType="int">
+		UPDATE board
+		SET hit = hit + 1 
+		WHERE no = #{no}
+	</insert>
+
+	<delete id="boardDelete" parameterType="com.javaex.vo.BoardVo">
+		DELETE from board
+		WHERE no = #{no}
+		AND user_no = #{userNo}
+	</delete>
+
+	<insert id="boardWrite" parameterType="com.javaex.vo.BoardVo">
+			INSERT into board
+			VALUES (seq_board_no.nextval,
+					#{title},
+					#{content},
+					0,
+					sysdate,
+					#{userNo})
+	</insert>
+	
+	<select id="modifyForm" parameterType="com.javaex.vo.BoardVo" resultMap="BoardVo">
+		SELECT  b.no,
+				title,
+				content,
+				name,
+				hit,
+				TO_CHAR(reg_date,'YY-MM-DD') reg_date,
+				user_no
+		FROM board b, users u
+		WHERE b.user_no = u.no
+		AND b.no = #{no}
+		AND b.user_no = #{userNo}
+	</select>
+
+	<update id="boardModify" parameterType="com.javaex.vo.BoardVo">
+			update board
+			set title = #{title},
+				content = #{content}
+			where no = #{no}
+			and user_no = #{userNo}
+	</update>
+
+</mapper>
