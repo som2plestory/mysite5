@@ -20,7 +20,7 @@ public class GuestbookController {
 	private GuestbookService guestbookService;
 
 	
-	// 방명록 리스트
+	/******************************************* 방명록 리스트 ********************************************/
 	@RequestMapping(value = "/guestbook/addList", method = { RequestMethod.GET, RequestMethod.POST })
 	public String list(Model model) {
 		System.out.println("GuestbookController > addList()");
@@ -31,7 +31,8 @@ public class GuestbookController {
 		return "guestbook/addList";
 	}
 
-	// 방명록 등록
+	
+	/******************************************** 방명록 등록 *********************************************/
 	@RequestMapping(value = "/guestbook/add", method = { RequestMethod.GET, RequestMethod.POST })
 	public String add(@ModelAttribute GuestbookVo guestbookVo) {
 		System.out.println("GuestbookController > add()");
@@ -41,7 +42,8 @@ public class GuestbookController {
 		return "redirect:/guestbook/addList";
 	}
 
-	// 방명록 삭제폼
+	
+	/******************************************* 방명록 삭제폼 ********************************************/
 	@RequestMapping(value = "/guestbook/deleteForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String deleteForm(Model model, @RequestParam("no") int no) {
 		System.out.println("GuestbookController > deleteForm()");
@@ -52,28 +54,25 @@ public class GuestbookController {
 		return "guestbook/deleteForm";
 	}
 	
-	// 방명록 삭제
+	/******************************************** 방명록 삭제 *********************************************/
 	@RequestMapping(value = "/guestbook/delete", method = { RequestMethod.GET, RequestMethod.POST })
 	public String delete(Model model, @ModelAttribute GuestbookVo guestbookVo) {
 		System.out.println("GuestbookController > delete()");
 
-		GuestbookVo guestVo = guestbookService.checkGuest(guestbookVo);
+		GuestbookVo guestVo = guestbookService.guestbookDelete(guestbookVo);
 		
+		//삭제 실패 : 비밀번호 입력 자체를 안했거나 입력했는데 틀렸다
 		if (guestVo != null) {
-			System.out.println("방명록 삭제 성공");
-			guestbookService.guestbookDelete(guestVo);
 			
-			return "redirect:/guestbook/addList";
-			
-		} else {
-			System.out.println("방명록 삭제 실패: 비밀번호 오류");
-			guestVo = guestbookService.getGuest(guestbookVo.getNo());
 			model.addAttribute("guestbookVo", guestVo);
-			
-			//실패표시
 			model.addAttribute("guestbookDelete", "Fail");
-			 
+			
 			return "guestbook/deleteForm";
+		
+		//비밀번호 일치 > 삭제 성공
+		} else {
+			 
+			return "redirect:/guestbook/addList";
 		}
 	}
 
