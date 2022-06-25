@@ -53,7 +53,6 @@
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
 								<span class="text-large bold"> ${userVo.id} </span>
-								<input type="hidden" name="id" value="${userVo.id}">
 							</div>
 	
 							<!-- 비밀번호 -->
