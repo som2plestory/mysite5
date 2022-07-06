@@ -75,7 +75,7 @@
 								<td>${guestVo.no}</td>
 								<td>${guestVo.name}</td>
 								<td>${guestVo.regDate}</td>
-								<td class="text-center"><a href="./deleteForm?no=${guestVo.no}">삭제</a></td>
+								<td class="text-center"><a href="${pageContext.request.contextPath}/guestbook/deleteForm?no=${guestVo.no}">삭제</a></td>
 							</tr>
 							<tr>
 								<td colspan=4 class="text-left">${guestVo.content}</td>

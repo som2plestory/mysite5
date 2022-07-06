@@ -13,7 +13,15 @@ public class GuestbookDao {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	
+	 /******************************** 방명록 저장(ajax) *********************************/
+		public void insertGuest(GuestbookVo guestbookVo) {
+			System.out.println("GuestbookDao > insertGuest()");
+			
+			sqlSession.insert("guestbook.insertSelectKey", guestbookVo);
+		}
+	
 	
 	/*********************************** 방명록 리스트 ************************************/
 	public List<GuestbookVo> getGuestList() {

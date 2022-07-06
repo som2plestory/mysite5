@@ -1,6 +1,8 @@
 package com.javaex.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,13 +18,64 @@ public class BoardService {
 	private BoardDao boardDao;
 	
 	
-	/**************************************** 게시판 리스트(+ 제목 검색) *****************************************/
-	public List<BoardVo> boardList(String keyword){
+	/**************************************** 게시판 리스트(+ 제목 검색 / 페이징) *****************************************/
+	public Map<String, Object> boardList(String keyword, int crtPage){
 		System.out.println("BoardService > BoardList()");
 		
-		List<BoardVo> boardList = boardDao.boardList(keyword);
 		
-		return boardList;
+		///////////////////// 페이지별 리스트 받아오기 /////////////////////
+		
+		//페이지당 글 수
+		int listCnt = 10;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword", keyword);
+		map.put("crtPage", crtPage);
+		map.put("listCnt", listCnt);
+		
+		List<BoardVo> boardList = boardDao.boardList(map);
+		
+		
+		/////////////////////////// 페이징 ////////////////////////////
+		//검색결과 or 전체 글 수
+		int totalCnt = boardDao.totalCnt(keyword);
+		
+		//페이지당 버튼 수
+		int pageBtnCount = 10;
+		
+		//마지막 버튼 번호
+		int endPageBtnNo = (int)Math.ceil(crtPage/(double)pageBtnCount)*pageBtnCount;
+		
+		//시작 버튼 번호
+		int startPageBtnNo = endPageBtnNo-pageBtnCount+1;
+		
+		//다음 화살표 유무
+		boolean next = false;
+		if( (listCnt*endPageBtnNo) < totalCnt ) {
+			next = true;
+		}else {
+			//
+			endPageBtnNo = (int)Math.ceil(totalCnt/(double)listCnt);
+		}
+		
+		//이전 화살표 유무
+		boolean prev = false;
+		if( startPageBtnNo != 1) {
+			prev = true;
+		}
+		
+		
+		//리스트 + 페이징 정보 
+		Map<String, Object> pMap = new HashMap<String, Object>();
+		pMap.put("boardList", boardList);
+		pMap.put("crtPage", crtPage);
+		pMap.put("keyword", keyword);
+		pMap.put("prev", prev);
+		pMap.put("startPageBtnNo", startPageBtnNo);
+		pMap.put("endPageBtnNo", endPageBtnNo);
+		pMap.put("next", next);
+		
+		return pMap;
 	}
 	
 	
@@ -110,7 +163,7 @@ public class BoardService {
 	}
 	
 	
-	/********************************************** 게시글 작성 ***********************************************/
+	/********************************************** 게시글 수정 ***********************************************/
 	public BoardVo boardModify(BoardVo writeVo) {
 		System.out.println("BoardService > boardModify()");
 		

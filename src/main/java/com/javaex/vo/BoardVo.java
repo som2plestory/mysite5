@@ -3,6 +3,7 @@ package com.javaex.vo;
 public class BoardVo {
 	
 	//필드
+	private int rownum;
 	private int no;
 	private String title;
 	private String content;
@@ -20,7 +21,8 @@ public class BoardVo {
 		this.no = no;
 	}
 	
-	public BoardVo(int no, String title, int hit, String regDate, int userNo) {
+	public BoardVo(int rownum, int no, String title, int hit, String regDate, int userNo) {
+		this.rownum = rownum;
 		this.no = no;
 		this.title = title;
 		this.hit = hit;
@@ -28,7 +30,8 @@ public class BoardVo {
 		this.userNo = userNo;
 	}
 
-	public BoardVo(int no, String title, String content, int hit, String regDate, int userNo, String name) {
+	public BoardVo(int rownum, int no, String title, String content, int hit, String regDate, int userNo, String name) {
+		this.rownum = rownum;
 		this.no = no;
 		this.title = title;
 		this.content = content;
@@ -40,6 +43,15 @@ public class BoardVo {
 	
 	
 	//메소드 - gs
+	
+	public int getRownum() {
+		return rownum;
+	}
+	
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	
 	public int getNo() {
 		return no;
 	}
@@ -95,13 +107,15 @@ public class BoardVo {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	
 	//메소드 -일반
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", regDate="
-				+ regDate + ", userNo=" + userNo + ", name=" + name + "]";
+		return "BoardVo [rownum=" + rownum + ", no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit
+				+ ", regDate=" + regDate + ", userNo=" + userNo + ", name=" + name + "]";
 	}
+	
 	
 
 }

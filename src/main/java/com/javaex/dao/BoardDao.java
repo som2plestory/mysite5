@@ -1,6 +1,7 @@
 package com.javaex.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,23 @@ public class BoardDao {
 	private SqlSession sqlSession;
 	
 	
-	/**************************************** 게시판 리스트(+ 제목 검색) *****************************************/
-	public List<BoardVo> boardList(String keyword){
+	/************************************* 게시판 리스트(+ 제목 검색 / 페이징) **************************************/
+	public List<BoardVo> boardList(Map<String, Object> map){
 		System.out.println("BoardDao > boardList()");
 		
-		List<BoardVo> boardList = sqlSession.selectList("board.boardList", keyword);
+		List<BoardVo> boardList = sqlSession.selectList("board.boardList", map);
 		
 		return boardList;
+	}
+	
+	
+	/**************************************** 게시판 글의 개수 (+검색) *****************************************/
+	public int totalCnt(String keyword) {
+		System.out.println("BoardDao > totalCnt()");
+		
+		int totalCnt = sqlSession.selectOne("board.totalCnt", keyword);
+		
+		return totalCnt;
 	}
 	
 	

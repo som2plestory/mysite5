@@ -13,7 +13,42 @@ public class GuestbookService {
 
 	@Autowired
 	private GuestbookDao guestbookDao;
+	
 
+	/*********************** 방명록 저장(ajax) ************************/
+	public GuestbookVo addGuest(GuestbookVo guestbookVo) {
+		System.out.println("GuestbookService > addGuest()");
+		
+		//저장
+		System.out.println("전-->" + guestbookVo);
+		guestbookDao.insertGuest(guestbookVo);
+		System.out.println("후-->" + guestbookVo);
+		
+		int no = guestbookVo.getNo();
+		
+		//방금 저장한 1개의 데이터를 가져온다
+		GuestbookVo guestVo = guestbookDao.getGuest(no);
+		
+		return guestVo;
+	}
+	
+
+	/**************************  방명록 삭제 ***************************/
+	public String remove(GuestbookVo guestVo) {
+		System.out.println("GuestbookService > remove()");
+		String state;
+		
+		int count = guestbookDao.guestbookDelete(guestVo);
+		
+		if(count == 1) {
+			state = "success";
+		}else {
+			state = "fail";
+		}
+		
+		return state;
+	}
+	
 
 	/************************** 방명록 리스트 ***************************/
 	public List<GuestbookVo> getGuestList() {

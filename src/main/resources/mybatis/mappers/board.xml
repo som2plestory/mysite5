@@ -4,6 +4,7 @@
 <mapper namespace="board">
 
 	<resultMap id="BoardVo" type="com.javaex.vo.BoardVo">
+		<result column="rn" property="rownum" />
 		<result column="no" property="no" />
 		<result column="title" property="title" />
 		<result column="content" property="content" />
@@ -13,8 +14,54 @@
 		<result column="name" property="name" />
 	</resultMap>
 
-	<!-- /*************************** 게시판 리스트(+ 제목 검색) *****************************/ -->
-	<select id="boardList" parameterType="String" resultMap="BoardVo">
+
+	<!-- /**************************** 게시판 글의 개수 (+검색)*******************************/ -->
+	<select id="totalCnt" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM board
+		WHERE title LIKE '%'||#{keyword}||'%'
+	</select>
+
+
+	<!-- /*********************** 게시판 리스트(+ 제목 검색 / 페이징) *************************/ -->
+	<select id="boardList" parameterType="Map" resultMap="BoardVo">
+		select  rn,
+		        no,
+		        title,
+		        content,
+		        hit,
+		        reg_date,
+		        user_no,
+		        name  
+		from   (select rownum rn,
+		               no,
+		               title,
+		               content,
+		               hit,
+		               reg_date,
+		               user_no,
+		               name
+		        from   (select  b.no no,
+		                        title,
+		                        content,
+		                        hit,
+		                        to_char(reg_date,'YY-MM-DD') reg_date,
+		                        user_no,
+		                        name
+		               from		board b, users u
+		               where 	b.user_no = u.no
+		               AND 		title LIKE '%'||#{keyword}||'%'
+		               order by no desc)
+		        )
+	<![CDATA[
+		where   rn >  (#{crtPage}-1)*#{listCnt}
+		and		rn <= #{crtPage}*#{listCnt}
+	]]>
+	</select>
+	
+	
+	<!-- /*********************** 게시판 리스트(+ 제목 검색 ) *************************/ -->
+	<select id="boardList2" parameterType="String" resultMap="BoardVo">
 		SELECT	b.no,
 				title,
 				name,
@@ -26,7 +73,7 @@
 		AND title LIKE '%'||#{keyword}||'%'
 		ORDER BY b.no DESC
 	</select>
-
+	
 	
 	<!-- /******************************* 게시글 읽기(1개) ********************************/ -->
 	<select id="getBoard" parameterType="int" resultMap="BoardVo">

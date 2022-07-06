@@ -6,8 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>MYSITE: 일반게시판</title>
+
+<!-- CSS -->
 <link href="${pageContext.request.contextPath}/assets/css/mysite.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
+
+<!-- js -->
+<!-- js -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.js"></script>
+
 </head>
 <body>
 	<div id="wrap">
@@ -63,36 +71,53 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${boardList}" var="boardVo">
+								<c:forEach items="${pMap.boardList}" var="boardVo">
 									<tr>
 										<td>${boardVo.no}</td>
 										<td class="text-left"><a href="${pageContext.request.contextPath}/board/read?no=${boardVo.no}">${boardVo.title}</a></td>
 										<td>${boardVo.name}</td>
 										<td>${boardVo.hit}</td>
 										<td>${boardVo.regDate}</td>
-										<c:if test="${authUser.no == boardVo.userNo}">
-											<td><a href="./delete?no=${boardVo.no}">[삭제]</a></td>
-										</c:if>
+										<td>
+											<c:if test="${authUser.no == boardVo.userNo}">
+												<a href="./delete?no=${boardVo.no}">[삭제]</a>
+											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 			
 						<div id="paging">
-							<input type="hidden" name="action" value="">
 							<ul>
-								<li><a href="">◀</a></li>
-								<li><a href="">1</a></li>
-								<li><a href="">2</a></li>
-								<li><a href="">3</a></li>
-								<li><a href="">4</a></li>
-								<li><a href="">5</a></li>
-								<li><a href="">6</a></li>
-								<li><a href="">7</a></li>
-								<li><a href="">8</a></li>
-								<li><a href="">9</a></li>
-								<li><a href="">10</a></li>
-								<li><a href="">▶</a></li>
+								<c:choose>
+									<c:when test="${pMap.prev}">
+										<li><a href="${pageContext.request.contextPath}/board/list?keyword=${pMap.keyword}&crtPage=${pMap.startPageBtnNo-1}">◀</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="">◀</a></li>
+									</c:otherwise>
+								</c:choose>
+								
+								<c:forEach begin="${pMap.startPageBtnNo}" end="${pMap.endPageBtnNo}" step="1" var="page">
+									<c:choose>
+										<c:when test="${pMap.crtPage==page}">
+											<li class="active"><a href="${pageContext.request.contextPath}/board/list?keyword=${pMap.keyword}&crtPage=${page}">${page}</a></li>
+										</c:when>
+										<c:otherwise>
+											<li><a href="${pageContext.request.contextPath }/board/list?keyword=${pMap.keyword}&crtPage=${page}">${page}</a></li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+
+								<c:choose>
+									<c:when test="${pMap.next}">
+										<li><a href="${pageContext.request.contextPath}/board/list?keyword=${pMap.keyword}&crtPage=${pMap.endPageBtnNo+1}">▶</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="">▶</a></li>
+									</c:otherwise>
+								</c:choose>
 							</ul>
 							
 							
@@ -118,5 +143,9 @@
 	<!-- //wrap -->
 
 </body>
+
+<script type="text/javascript">
+
+</script>
 
 </html>
